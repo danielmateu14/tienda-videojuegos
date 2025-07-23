@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 APPS_PROPIAS = [
     'juegos',
+    'rest_framework',
 ]
 
 APPS_TERCEROS = [

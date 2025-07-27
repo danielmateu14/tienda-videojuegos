@@ -1,8 +1,5 @@
-from django.urls import path
-from .views import VideojuegoListCreateAPIView, VideojuegoDetailAPIView
+from rest_framework.routers import DefaultRouter
+from .views import VideojuegoViewSet
 
-urlpatterns = [
-    path('videojuegos/', VideojuegoListCreateAPIView.as_view(), name='videojuego-list-create'),
-    path('videojuegos/<int:pk>/', VideojuegoDetailAPIView.as_view(), name='videojuego-detail'),
-
-]
+router = DefaultRouter()
+router.register(r'videojuegos', VideojuegoViewSet, basename='videojuego')

@@ -33,6 +33,7 @@ APPS_PROPIAS = [
     'juegos',
     'rest_framework',
     'usuarios',
+    'compras',
 ]
 
 APPS_TERCEROS = [

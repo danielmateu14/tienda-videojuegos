@@ -1,16 +1,18 @@
 from django.contrib import admin
 from django.urls import path, include
-from juegos.urls import router
-from usuarios.views import RegistroUsuarioAPIView
-
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # Juegos URLs
-    path('api/', include(router.urls)),
 
-    # Usuarios URLs
+    # Juegos: incluye router (videojuegos) + rutas manuales (comentarios, etc.)
+    path('api/', include('juegos.urls')),
+
+    # Usuarios (registro, login, refresh, hola, etc.)
     path('api/usuarios/', include('usuarios.urls')),
-    path('api-auth/', include('rest_framework.urls')), 
-]
 
+    # Compras
+    path('api/', include('compras.urls')),
+
+    # Browsable API login/logout
+    path('api-auth/', include('rest_framework.urls')),
+]

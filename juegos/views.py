@@ -2,7 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
 
@@ -52,8 +52,7 @@ class VideojuegoViewSet(ModelViewSet):
     ordering = ['-fecha_lanzamiento']
     pagination_class = DefaultPagination
 
-    @action(detail=True, methods=['post'], url_path='comprar',
-            permission_classes=[IsAuthenticated, EsCliente])
+    @action(detail=True, methods=['post'], url_path='comprar')
     def comprar(self, request, pk=None):
         """
         POST /api/videojuegos/{id}/comprar/
@@ -67,6 +66,14 @@ class VideojuegoViewSet(ModelViewSet):
         serializer.is_valid(raise_exception=True)
         compra = serializer.save()
         return Response(CompraSerializer(compra).data, status=status.HTTP_201_CREATED)
+
+    # 👇 FIX de permisos: abre list/retrieve a cualquiera, y "comprar" solo para cliente autenticado.
+    def get_permissions(self):
+        if self.action in ('list', 'retrieve'):
+            return [AllowAny()]
+        if self.action == 'comprar':
+            return [IsAuthenticated(), EsCliente()]
+        return [EsAdminOEmpleado()]
 
 
 # === Comentarios generales ===
